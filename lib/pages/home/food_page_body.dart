@@ -1,7 +1,7 @@
-
-
+import 'package:app_food_shopping/routers/router_helper.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../utils/colors.dart';
 import '../../widgets/big_text.dart';
@@ -46,12 +46,18 @@ class _FoodPageBodyState extends State<FoodPageBody> {
       children: [
         Container(
           height: 320,
-          child: PageView.builder(
-              controller: pageController,
-              itemCount: 5,
-              itemBuilder: (context, position) {
-                return _buildPageItem(position);
-              }),
+          child: GestureDetector(
+            onTap: () {
+              Get.toNamed(RouterHelper.popularFood,
+                  arguments: 'Delicious Food');
+            },
+            child: PageView.builder(
+                controller: pageController,
+                itemCount: 5,
+                itemBuilder: (context, position) {
+                  return _buildPageItem(position);
+                }),
+          ),
         ),
         new DotsIndicator(
           dotsCount: 5,
@@ -73,7 +79,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               BigText(
-                text: "Popular",
+                text: "Recommended",
               ),
               const SizedBox(
                 width: 10,
@@ -105,71 +111,83 @@ class _FoodPageBodyState extends State<FoodPageBody> {
               shrinkWrap: true,
               itemCount: 10,
               itemBuilder: (context, index) {
-                return Container(
-                  margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
-                  child: Row(
-                    children: [
-                      // Image
-                      Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white38,
-                            image: const DecorationImage(
-                                fit: BoxFit.cover,
-                                image:
-                                    AssetImage("assets/images/banner03.jpg"))),
-                        height: 120,
-                        width: 120,
-                      ),
-                      //   Text
-                      Expanded(
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(20),
-                                bottomRight: Radius.circular(20)),
-                            color: Colors.white,
-                          ),
-                          height: 100,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                BigText(
-                                  text: 'Nutritious fruit meal in China',
-                                ),
-                                const SizedBox(height: 10,),
-                                SmallText(text: "With chinese characteristics"),
-                                const SizedBox(height: 10,),
-                                const Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    IconAndTextWidget(
-                                      icon: Icons.circle_sharp,
-                                      text: "Normal",
-                                      iconColor: AppColors.iconColor1,
-                                    ),
-                                    IconAndTextWidget(
-                                      icon: Icons.location_on,
-                                      text: "1.7km",
-                                      iconColor: AppColors.mainColor,
-                                    ),
-                                    IconAndTextWidget(
-                                      icon: Icons.access_time_rounded,
-                                      text: "32min",
-                                      iconColor: AppColors.iconColor2,
-                                    )
-                                  ],
-                                )
-                              ],
+                return GestureDetector(
+                  onTap: () {
+                    Get.toNamed(RouterHelper.getRecommendedFood());
+                  },
+                  child: Container(
+                    margin:
+                        const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+                    child: Row(
+                      children: [
+                        // Image
+                        Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white38,
+                              image: const DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage(
+                                      "assets/images/banner03.jpg"))),
+                          height: 120,
+                          width: 120,
+                        ),
+                        //   Text
+                        Expanded(
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(20),
+                                  bottomRight: Radius.circular(20)),
+                              color: Colors.white,
+                            ),
+                            height: 100,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  BigText(
+                                    text: 'Nutritious fruit meal in China',
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  SmallText(
+                                      text: "With chinese characteristics"),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  const Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      IconAndTextWidget(
+                                        icon: Icons.circle_sharp,
+                                        text: "Normal",
+                                        iconColor: AppColors.iconColor1,
+                                      ),
+                                      IconAndTextWidget(
+                                        icon: Icons.location_on,
+                                        text: "1.7km",
+                                        iconColor: AppColors.mainColor,
+                                      ),
+                                      IconAndTextWidget(
+                                        icon: Icons.access_time_rounded,
+                                        text: "32min",
+                                        iconColor: AppColors.iconColor2,
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                 );
               }),
@@ -214,7 +232,9 @@ class _FoodPageBodyState extends State<FoodPageBody> {
             margin: const EdgeInsets.only(left: 10, right: 10),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
-                color: index.isEven ? const Color(0xFF69c5df) : const Color(0xFF9294cc),
+                color: index.isEven
+                    ? const Color(0xFF69c5df)
+                    : const Color(0xFF9294cc),
                 image: const DecorationImage(
                     image: AssetImage("assets/images/banner04.jpg"),
                     fit: BoxFit.cover)),

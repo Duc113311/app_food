@@ -1,14 +1,25 @@
 import 'package:app_food_shopping/widgets/expandable_text_widget.dart';
 import 'package:app_food_shopping/widgets/small_text.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 import '../../utils/colors.dart';
 import '../../widgets/app_column.dart';
 import '../../widgets/app_icon.dart';
 import '../../widgets/big_text.dart';
 
-class PopularFoodDetail extends StatelessWidget {
+class PopularFoodDetail extends StatefulWidget {
   const PopularFoodDetail({super.key});
+
+  @override
+  State<PopularFoodDetail> createState() => _PopularFoodDetailState();
+}
+
+class _PopularFoodDetailState extends State<PopularFoodDetail> {
+  final String argumentValue = Get.arguments;
+  int countValue = 0;
+  int total = 10;
 
   @override
   Widget build(BuildContext context) {
@@ -30,17 +41,22 @@ class PopularFoodDetail extends StatelessWidget {
             ),
           ),
           // Icon widgets
-          const Positioned(
+          Positioned(
               top: 45,
               left: 20,
               right: 20,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  AppIcon(
-                    icon: Icons.arrow_back_ios,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: const AppIcon(
+                      icon: Icons.arrow_back_ios,
+                    ),
                   ),
-                  AppIcon(icon: Icons.shopping_cart_outlined)
+                  const AppIcon(icon: Icons.shopping_cart_outlined)
                 ],
               )),
           // Introduction of food
@@ -57,11 +73,11 @@ class PopularFoodDetail extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const AppColumn(
-                        text: "Chinese Side",
+                      AppColumn(
+                        text: argumentValue,
                       ),
                       const SizedBox(
-                        height:10,
+                        height: 10,
                       ),
                       BigText(text: "Introduce"),
                       const SizedBox(
@@ -98,20 +114,42 @@ class PopularFoodDetail extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20), color: Colors.white),
               child: Row(
                 children: [
-                  const Icon(
-                    Icons.remove,
-                    color: AppColors.signColor,
+                  GestureDetector(
+                    child: const Icon(
+                      Icons.remove,
+                      color: AppColors.signColor,
+                    ),
+                    onTap: () {
+                      setState(() {
+                        if (countValue > 0) {
+                          countPay(countValue, false);
+                        }
+                      });
+                    },
                   ),
                   const SizedBox(
                     width: 10,
                   ),
-                  BigText(text: "0"),
+                  SizedBox(
+                      width: 30,
+                      child: Align(
+                          alignment: Alignment.center,
+                          child: BigText(text: countValue.toString()))),
                   const SizedBox(
                     width: 10,
                   ),
-                  const Icon(
-                    Icons.add,
-                    color: AppColors.signColor,
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        if (countValue >= 0) {
+                          countPay(countValue, true);
+                        }
+                      });
+                    },
+                    child: const Icon(
+                      Icons.add,
+                      color: AppColors.signColor,
+                    ),
                   )
                 ],
               ),
@@ -122,11 +160,25 @@ class PopularFoodDetail extends StatelessWidget {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: AppColors.mainColor),
-              child: BigText(text: "\$10 | Add to card"),
+              child: BigText(text: "\$" + total.toString() + " | Add to card"),
             )
           ],
         ),
       ),
     );
+  }
+
+  void countPay(int count, bool statusCount) {
+    if (statusCount) {
+      if (count >= 0) {
+        countValue++;
+        total = countValue * total;
+      }
+    } else {
+      if (count > 0) {
+        countValue--;
+        total = countValue * total;
+      }
+    }
   }
 }

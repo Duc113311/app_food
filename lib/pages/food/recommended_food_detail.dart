@@ -15,12 +15,18 @@ class RecommendedFoodDetail extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            automaticallyImplyLeading: false,
             toolbarHeight: 70,
-            title: const Row(
+            title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                AppIcon(icon: Icons.clear),
-                AppIcon(icon: Icons.shopping_cart_outlined),
+                GestureDetector(
+                    child: const AppIcon(icon: Icons.clear),
+                  onTap: (){
+                    Navigator.pop(context);
+                  },
+                ),
+                const AppIcon(icon: Icons.shopping_cart_outlined),
               ],
             ),
             bottom: PreferredSize(
